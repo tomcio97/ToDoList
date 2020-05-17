@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -6,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using ToDoList.API.Configuration;
 using ToDoList.API.Dtos;
 using ToDoList.API.Models;
@@ -85,6 +90,60 @@ namespace ToDoList.API.Controllers
 
             }
             return BadRequest("Confirm Failed");
+        }
+
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login (UserForLoginDto userForLogin)
+        {
+            ApplicationUser user;
+            if(ModelState.IsValid && userForLogin != null && (user = await ValidateUser(userForLogin)) != null)
+            {
+                var token = GenerateToken(user);
+                return Ok(new {token = token});
+            }
+
+            return BadRequest("Login Failed");
+        }
+
+        private async Task<ApplicationUser> ValidateUser(UserForLoginDto userForLogin)
+        {
+            var user = await userManager.FindByNameAsync(userForLogin.UserName);
+            if(userForLogin != null)
+            {
+                if(await userManager.IsEmailConfirmedAsync(user))
+                {
+                    var result = userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, userForLogin.Password);
+                   
+                    if(result == PasswordVerificationResult.Success) return user;
+                }
+            }
+            return null;
+        }
+
+        private Object GenerateToken(ApplicationUser user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(jwtBearerTokenSettings.SecretKey);
+            
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email)
+            };
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+
+                Expires = DateTime.UtcNow.AddHours(jwtBearerTokenSettings.ExpiryTimeInHours),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                Audience = jwtBearerTokenSettings.Audience,
+                Issuer = jwtBearerTokenSettings.Issuer
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }
