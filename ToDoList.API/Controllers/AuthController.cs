@@ -35,9 +35,10 @@ namespace ToDoList.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(UserForRegisterDto userForRegister)
+        [Route("Register")]
+        public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegister)
         {
-            if (ModelState.IsValid || userForRegister != null)
+            if (userForRegister != null)
             {
                 var user = mapper.Map<ApplicationUser>(userForRegister);
 
@@ -51,13 +52,15 @@ namespace ToDoList.API.Controllers
                     return new BadRequestObjectResult(new {Message = "User Registration Failed", Errors = dictionary});
                 }
 
-                var emailConfirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(emailConfirmationToken);
-                var codeEncoded = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
+                // var emailConfirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                // byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(emailConfirmationToken);
+                // var codeEncoded = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
 
-                string link = "http://localhost:5000/api/auth/confirm?email=" + user.Email + "&token=" + codeEncoded;
+                // string link = "http://localhost:4200/potwierdzenie?email=" + user.Email + "&token=" + codeEncoded;
 
-                await emailService.SendEmail(user.Email, "Confirmation email link", link);
+                // await emailService.SendEmail(user.Email, "Confirmation email link", link);
+
+               await SendConfirmationEmail(user.Email);
 
                 return Ok("Succes, Check your email and confirm this registration");
             }
@@ -90,6 +93,31 @@ namespace ToDoList.API.Controllers
 
             }
             return BadRequest("Confirm Failed");
+        }
+
+        [HttpGet]
+        [Route("registerToken")]
+        public async Task<IActionResult> SendConfirmationEmail([FromQuery] string email)
+        {
+            ApplicationUser user;
+            if(email != null)
+            {
+                user = await userManager.FindByEmailAsync(email);
+
+            if(user != null)
+            {
+                var emailConfirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(emailConfirmationToken);
+                var codeEncoded = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
+
+                string link = "http://localhost:4200/potwierdzenie?email=" + user.Email + "&token=" + codeEncoded;
+
+                await emailService.SendEmail(user.Email, "Confirmation email link", "<a href=\"" + link + "\">Kliknij tutaj, aby potwierdzić rejestrację");
+
+                return Ok();
+                }
+            }
+            return BadRequest();
         }
 
         [HttpPost]

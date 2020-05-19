@@ -7,16 +7,16 @@
     </div>
 
     <!-- Login Form -->
-    <form class="mt-3">
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="Login">
-      <input type="password" id="password" class="fadeIn third" name="login" placeholder="Hasło">
+    <form #loginForm="ngForm" class="mt-3" (ngSubmit)="login()">
+      <input type="text" id="login" class="fadeIn second" [(ngModel)]= "model.userName" name="login" placeholder="Nazwa użytkownika" required>
+      <input type="password" id="password" class="fadeIn third" [(ngModel)]= "model.password" name="login" placeholder="Hasło" required>
       <input type="submit" class="fadeIn fourth" value="Zaloguj">
     </form>
 
     <!-- Remind Passowrd -->
     <div id="formFooter">
       <a class="underlineHover" href="#">Zapomniałeś hasło?</a>
-      <p class="mt-3 text-secondary pb-0">Nie masz jeszcze konta? <a class="underlineHover" href="#">Zarejestruj się</a></p>
+      <p class="mt-3 text-secondary pb-0">Nie masz jeszcze konta? <a class="underlineHover" [routerLink]="['/rejestracja']" routerLinkActive="router-link-active" >Zarejestruj się</a></p>
     </div>
 
   </div>

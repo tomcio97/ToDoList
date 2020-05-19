@@ -41,6 +41,13 @@ namespace ToDoList.API
             services.AddDbContext<DataContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, IdentityRole>(o =>
             {
+                o.Password = new PasswordOptions{
+                    RequiredLength = 6,
+                    RequireUppercase = false,
+                    RequireLowercase = false,
+                    RequireDigit =false,
+                    RequireNonAlphanumeric = false
+                };
                 o.SignIn.RequireConfirmedAccount = true;
                 o.User.RequireUniqueEmail = true;
                 o.SignIn.RequireConfirmedEmail = true;
