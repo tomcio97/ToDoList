@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { User } from '../_models/User';
 
 @Injectable({
   providedIn: 'root'
@@ -32,8 +33,8 @@ logout() {
   }
 }
 
-register(model: any) {
-  return this.http.post(this.baseUrl + 'register', model, {responseType: 'text'});
+register(user: User) {
+  return this.http.post(this.baseUrl + 'register', user, {responseType: 'text'});
 }
 
 confirmation(email, token) {

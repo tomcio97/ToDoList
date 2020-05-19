@@ -17,10 +17,19 @@
 
     <!-- Register Form -->
     <form [formGroup]= "registerForm" class="mt-3" (ngSubmit)="register()">
-      <input type="text" id="login" class="fadeIn second" name="userName" formControlName="userName" placeholder="Nazwa użytkownika">
-      <input type="text" id="email" class="fadeIn second" name="email" formControlName="email" placeholder="E-mail">
-      <input type="password" id="password" class="fadeIn third" name="password" formControlName="password" placeholder="Hasło">
-      <input type="password" id="password" class="fadeIn third" name="confirmPassword" formControlName="confirmPassword" placeholder="Potwierdź hasło">
+      <div class="form-group">
+      <input type="text" id="login" class="fadeIn second" name="userName" formControlName="userName" placeholder="Nazwa użytkownika" [ngClass]="{'is-invalid': registerForm.get('userName').errors && registerForm.get('userName').touched }">
+      <div class="invalid-feedback" *ngIf= "registerForm.get('userName').hasError('required')">Podaj nazwę użytkownika.</div>
+      <div class="invalid-feedback" *ngIf= "registerForm.get('userName').hasError('minlength')">Nazwa użytkownika musi zawierać min. 4 znaki.</div>
+      </div>
+      <input type="text" id="email" class="fadeIn second" name="email" formControlName="email" placeholder="E-mail" [ngClass]="{'is-invalid': registerForm.get('email').errors && registerForm.get('email').touched }">
+      <div class="invalid-feedback" *ngIf= "registerForm.get('email').hasError('required')">Podaj adres email.</div>
+      <div class="invalid-feedback" *ngIf= "registerForm.get('email').hasError('email')">Podaj poprawny email.</div>
+      <input type="password" id="password" class="fadeIn third" name="password" formControlName="password" placeholder="Hasło" [ngClass]="{'is-invalid': registerForm.get('password').errors && registerForm.get('password').touched }">
+      <div class="invalid-feedback" *ngIf= "registerForm.get('password').hasError('required')">Podaj hasło.</div>
+      <div class="invalid-feedback" *ngIf= "registerForm.get('password').hasError('minlength')">Hasło musi zawierać min. 6 znaków</div>
+      <input type="password" id="password" class="fadeIn third" name="confirmPassword" formControlName="confirmPassword" placeholder="Potwierdź hasło" [ngClass]="{'is-invalid': registerForm.hasError('password') && registerForm.get('confirmPassword').touched }">
+      <div class="invalid-feedback" *ngIf= "registerForm.hasError('password') && registerForm.get('confirmPassword').touched">Hasła się nie zgadzają.</div>   
       <input type="submit" class="fadeIn fourth" value="Zarejestruj">
     </form>
 
