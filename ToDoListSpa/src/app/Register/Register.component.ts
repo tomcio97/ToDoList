@@ -3,6 +3,8 @@ import { AuthService } from '../_services/auth.service';
 import { AlertifyService } from '../_services/alertify.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from '../_models/User';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-Register',
@@ -14,10 +16,14 @@ export class RegisterComponent implements OnInit {
   user: User;
   isRegisterFormOnly = true;
   registerForm: FormGroup;
-  constructor(private authService: AuthService, private alertify: AlertifyService) { }
+  constructor(private authService: AuthService, private alertify: AlertifyService, private router: Router) { }
 
   ngOnInit() {
-   this.registerForm = new FormGroup({
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/']);
+    }
+
+    this.registerForm = new FormGroup({
      userName: new FormControl('', [Validators.minLength(4), Validators.required]),
      email: new FormControl('', [Validators.required, Validators.email]),
      password: new FormControl('', Validators.minLength(6)),
@@ -38,12 +44,20 @@ export class RegisterComponent implements OnInit {
     this.authService.register(this.user).subscribe(() => {
       this.alertify.success('Zostałeś zarejestrowany');
       this.isRegisterFormOnly = false;
-    }, error => {
-      this.alertify.error('Wystąpił błąd');
-      console.log(error);
-    });
+    }, (error: HttpErrorResponse) => {
+      const errorPayload = JSON.parse(error.error);
 
-    console.log(this.user);
+      if (errorPayload.DuplicateEmail) {
+        this.alertify.error('Ten adres e-mail już jest zarejestrowany');
+      }
+      if (errorPayload.DuplicateUserName) {
+        this.alertify.error('Użytkownik o takiej nazwie już istnieje');
+      }
+      if (!errorPayload.DuplicateEmail && !errorPayload.DuplicateUserName) {
+        this.alertify.error('Wystąpił błąd');
+      }
+
+    });
   }
   }
 
@@ -52,7 +66,7 @@ export class RegisterComponent implements OnInit {
       this.alertify.success('Wysłano ponownie mail\'a potwierdzającego');
     }, error => {
       this.alertify.error('Wystąpił błąd');
-      console.log(error.errors);
+      console.log(error);
     });
   }
 

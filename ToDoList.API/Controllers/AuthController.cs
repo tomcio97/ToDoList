@@ -49,16 +49,8 @@ namespace ToDoList.API.Controllers
 
                     foreach(IdentityError error in result.Errors) dictionary.AddModelError(error.Code, error.Description);
                 
-                    return new BadRequestObjectResult(new {Message = "User Registration Failed", Errors = dictionary});
+                    return new BadRequestObjectResult(dictionary);
                 }
-
-                // var emailConfirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                // byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(emailConfirmationToken);
-                // var codeEncoded = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
-
-                // string link = "http://localhost:4200/potwierdzenie?email=" + user.Email + "&token=" + codeEncoded;
-
-                // await emailService.SendEmail(user.Email, "Confirmation email link", link);
 
                await SendConfirmationEmail(user.Email);
 
@@ -134,6 +126,7 @@ namespace ToDoList.API.Controllers
             return BadRequest("Login Failed");
         }
 
+        
         private async Task<ApplicationUser> ValidateUser(UserForLoginDto userForLogin)
         {
             var user = await userManager.FindByNameAsync(userForLogin.UserName);

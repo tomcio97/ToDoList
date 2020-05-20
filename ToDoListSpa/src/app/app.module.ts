@@ -13,6 +13,7 @@ import { appRoutes } from './routes';
 import { AuthGuard } from './_guards/auth.guard';
 import { AlertifyService } from './_services/alertify.service';
 import { RegisterConfirmationComponent } from './Register/register-confirmation/register-confirmation.component';
+import { ErrorInterceptorProvider } from './_services/error.interceptor';
 
 @NgModule({
    declarations: [
@@ -32,7 +33,8 @@ import { RegisterConfirmationComponent } from './Register/register-confirmation/
    providers: [
       AuthService,
       AuthGuard,
-      AlertifyService
+      AlertifyService,
+      //ErrorInterceptorProvider
    ],
    bootstrap: [
       AppComponent
