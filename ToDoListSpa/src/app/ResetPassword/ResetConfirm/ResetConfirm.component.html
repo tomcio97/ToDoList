@@ -1,0 +1,41 @@
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+<div *ngIf= "result === ''">
+    <div class="text-secondary mt-5">
+      <h3>Zmiana hasła</h3>
+    </div>
+    <form [formGroup]= "passwordForm" (ngSubmit)= "confirmPassword()">
+    <input type="password" id="password" class="fadeIn third" name="password" formControlName="password"  placeholder="Hasło" [ngClass]="{'is-invalid': passwordForm.get('password').errors && passwordForm.get('password').touched }">
+    <div class="invalid-feedback" *ngIf= "passwordForm.get('password').hasError('required')">Hasło jest wymagane</div>
+    <div class="invalid-feedback" *ngIf= "passwordForm.get('password').hasError('minlength')">Hasło musi zawierać min. 6 znaków</div>
+    <input type="password" id="password" class="fadeIn third" name="confirmPassword" formControlName="confirmPassword" placeholder="Potwierdz hasło" [ngClass]="{'is-invalid': passwordForm.hasError('password') && passwordForm.get('confirmPassword').touched }">
+    <div class="invalid-feedback" *ngIf= "passwordForm.hasError('password') && passwordForm.get('confirmPassword').touched">Hasła się nie zgadzają</div>
+    <input type="submit" class="fadeIn fourth" value="Zmień hasło">
+  </form>
+
+</div>
+<div *ngIf= "result === 'succes'">
+  <div class="text-secondary mt-5">
+    <h3>Hasło zostało zmienione!</h3>
+  </div>
+
+  <p class="mt-3 text-secondary mt-5 p-5">Możesz teraz się zalogować.</p>
+
+  <div id="formFooter">
+    <p class="mt-3 text-secondary pb-0"><a class="underlineHover" [routerLink]="['/login']" routerLinkActive="router-link-active">Zaloguj się</a></p>
+  </div>
+
+</div>
+
+<div *ngIf= "result === 'error'">
+  <div class="text-secondary mt-5">
+    <h3>Coś poszło nie tak!</h3>
+  </div>
+
+  <p class="mt-3 text-secondary mt-5 p-5">Spróbuj jeszcze raz.</p>
+
+</div>
+
+  </div>
+</div>

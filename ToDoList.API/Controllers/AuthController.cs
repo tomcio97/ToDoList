@@ -126,7 +126,57 @@ namespace ToDoList.API.Controllers
             return BadRequest("Login Failed");
         }
 
-        
+        [HttpGet]
+        [Route("Reset/{email}")]
+        public async Task<IActionResult> ResetPassword(string email)
+        {
+            if(email != null)
+            {
+                var user = await userManager.FindByEmailAsync(email);
+                if(user == null)
+                {
+                    return BadRequest("Email not exist");
+                }
+                    var emailResetPasswordToken = await userManager.GeneratePasswordResetTokenAsync(user);
+                    byte[] tokenBytes = Encoding.UTF8.GetBytes(emailResetPasswordToken);
+                    var codeEncoded = WebEncoders.Base64UrlEncode(tokenBytes);
+                    string link = "http://localhost:4200/resetpassword?email=" + user.Email + "&token=" + codeEncoded;
+                    await emailService.SendEmail(user.Email, "Reset password", link);
+                    return Ok();
+            }
+
+            return BadRequest("Reset password failed");
+        }
+
+        [HttpPut]
+        [Route("ConfirmReset/{email}")]
+        public async Task<IActionResult> ConfirmResetPassword(UserForConfirmPassword userForConfirm, string email)
+        {
+            if(email != null && userForConfirm.token != null && userForConfirm.password != null)
+            {
+                var user = await userManager.FindByEmailAsync(email);
+                if(user != null)
+                {
+                    var codeDecodedBytes = WebEncoders.Base64UrlDecode(userForConfirm.token);
+                    var codeDecoded = Encoding.UTF8.GetString(codeDecodedBytes);
+                    var result = await userManager.ResetPasswordAsync(user, codeDecoded, userForConfirm.password);
+                    if(result.Succeeded) return Ok("Password changed");
+
+                    var dictionary = new ModelStateDictionary();
+                    foreach(IdentityError error in result.Errors)
+                    {
+                        dictionary.AddModelError(error.Code, error.Description);
+                    }
+
+                     return new BadRequestObjectResult(dictionary);
+                }
+
+                return BadRequest("Email not exist");
+            }
+
+            return BadRequest("Reset password failed");
+        }
+
         private async Task<ApplicationUser> ValidateUser(UserForLoginDto userForLogin)
         {
             var user = await userManager.FindByNameAsync(userForLogin.UserName);

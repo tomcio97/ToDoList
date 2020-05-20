@@ -14,6 +14,8 @@ import { AuthGuard } from './_guards/auth.guard';
 import { AlertifyService } from './_services/alertify.service';
 import { RegisterConfirmationComponent } from './Register/register-confirmation/register-confirmation.component';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
+import { ResetConfirmComponent } from './ResetPassword/ResetConfirm/ResetConfirm.component';
+import { ResetPasswordComponent } from './ResetPassword/ResetPassword.component';
 
 @NgModule({
    declarations: [
@@ -21,7 +23,9 @@ import { ErrorInterceptorProvider } from './_services/error.interceptor';
       LoginComponent,
       RegisterComponent,
       HomeComponent,
-      RegisterConfirmationComponent
+      RegisterConfirmationComponent,
+      ResetConfirmComponent,
+      ResetPasswordComponent
    ],
    imports: [
       HttpClientModule,

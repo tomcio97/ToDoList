@@ -54,4 +54,12 @@ sendConfirmationAgain(email) {
   return this.http.get(this.baseUrl + 'registerToken', {params});
 }
 
+resetPassword(email){
+  return this.http.get(this.baseUrl + 'reset/' + email, {responseType: 'text'});
+}
+
+resetConfirm(email, model) {
+ return this.http.put(this.baseUrl + 'confirmReset/' + email, model, {responseType: 'text'});
+}
+
 }
