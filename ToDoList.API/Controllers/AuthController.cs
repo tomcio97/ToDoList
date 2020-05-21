@@ -141,7 +141,7 @@ namespace ToDoList.API.Controllers
                     byte[] tokenBytes = Encoding.UTF8.GetBytes(emailResetPasswordToken);
                     var codeEncoded = WebEncoders.Base64UrlEncode(tokenBytes);
                     string link = "http://localhost:4200/resetpassword?email=" + user.Email + "&token=" + codeEncoded;
-                    await emailService.SendEmail(user.Email, "Reset password", link);
+                    await emailService.SendEmail(user.Email, "Reset password", "Twoja nazwa użytkownika to:" + user.UserName + "<br /> <a href=\"" + link + "\"> Kliknij tutaj, aby ustawić nowe hasło" );
                     return Ok();
             }
 

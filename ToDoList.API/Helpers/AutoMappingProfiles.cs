@@ -9,6 +9,8 @@ namespace ToDoList.API.Helpers
         public AutoMappingProfiles()
         {
             CreateMap<UserForRegisterDto, ApplicationUser>();
+            CreateMap<TaskForCreationDto, ToDo>();
+            CreateMap<ToDo, TaskForReturnDto>();
         }
     }
 }

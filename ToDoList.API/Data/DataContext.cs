@@ -9,7 +9,8 @@ namespace ToDoList.API.Data
     {
         public DataContext(DbContextOptions o) :base(o)
         {
-            
         }
+
+        public DbSet<ToDo> ToDos { get; set; }
     }
 }

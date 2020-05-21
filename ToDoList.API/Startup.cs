@@ -37,8 +37,14 @@ namespace ToDoList.API
         {
             services.AddControllers();
             services.AddTransient<IEmailService, EmailService>();
+            services.AddScoped<IGenericRepository, GenericRepository>();
+            services.AddScoped<IToDoRepository, ToDoRepository>();
             services.AddAutoMapper();
             services.AddDbContext<DataContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddControllersWithViews()
+            .AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
             services.AddIdentity<ApplicationUser, IdentityRole>(o =>
             {
                 o.Password = new PasswordOptions{
