@@ -6,9 +6,16 @@ import { AuthGuard } from './_guards/auth.guard';
 import { RegisterConfirmationComponent } from './Register/register-confirmation/register-confirmation.component';
 import { ResetConfirmComponent } from './ResetPassword/ResetConfirm/ResetConfirm.component';
 import { ResetPasswordComponent } from './ResetPassword/ResetPassword.component';
+import { DoneComponent } from './Done/Done.component';
+import { AddTaskComponent } from './AddTask/AddTask.component';
+import { ToDoComponent } from './ToDo/ToDo.component';
 
 export const appRoutes: Routes = [
-    {path: '', component: HomeComponent, canActivate: [AuthGuard]},
+    {path: '', component: HomeComponent, canActivate: [AuthGuard], children: [
+        {path: '', component: ToDoComponent},
+        {path: 'zrobione', component: DoneComponent},
+        {path: 'dodawanie', component: AddTaskComponent}
+    ] },
     {path: 'login', component: LoginComponent},
     {path: 'rejestracja', component: RegisterComponent},
     {path: 'potwierdzenie', component: RegisterConfirmationComponent},

@@ -1,0 +1,37 @@
+<!--Navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark primary-color">
+
+  <!-- Navbar brand -->
+  <a class="navbar-brand" href="#">Witaj {{decodedToken.unique_name | titlecase}}</a>
+
+  <!-- Collapse button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+    aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Collapsible content -->
+  <div class="collapse navbar-collapse" id="basicExampleNav">
+
+    <!-- Links -->
+    <ul class="navbar-nav mr-auto ml-auto">
+      <li class="nav-item active" [ngClass] = "{'active' : checkRouterLink('/')}">
+        <a class="nav-link" [routerLink]="['/']" routerLinkActive="router-link-active" >Do zrobienia
+        </a>
+      </li>
+      <li class="nav-item" [ngClass] = "{'active' : checkRouterLink('/zrobione')}">
+        <a class="nav-link" [routerLink]="['/zrobione']" routerLinkActive="router-link-active" >Zrobione</a>
+      </li>
+      <li class="nav-item" [ngClass] = "{'active' : checkRouterLink('/dodawanie')}">
+        <a class="nav-link" [routerLink]="['/dodawanie']" routerLinkActive="router-link-active" >Dodaj zadanie</a>
+      </li>
+
+    </ul>
+    <!-- Links -->
+
+    <button class="btn btn-info" (click)="logout()">Wyloguj</button>
+  </div>
+  <!-- Collapsible content -->
+
+</nav>
+<!--/.Navbar-->

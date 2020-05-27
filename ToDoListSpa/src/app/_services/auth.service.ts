@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../_models/User';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -60,6 +61,11 @@ resetPassword(email){
 
 resetConfirm(email, model) {
  return this.http.put(this.baseUrl + 'confirmReset/' + email, model, {responseType: 'text'});
+}
+
+decodedToken() {
+  const helper = new JwtHelperService();
+  return helper.decodeToken(localStorage.getItem('token'));
 }
 
 }

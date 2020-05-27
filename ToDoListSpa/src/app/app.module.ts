@@ -16,6 +16,17 @@ import { RegisterConfirmationComponent } from './Register/register-confirmation/
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { ResetConfirmComponent } from './ResetPassword/ResetConfirm/ResetConfirm.component';
 import { ResetPasswordComponent } from './ResetPassword/ResetPassword.component';
+import { NavComponent } from './Nav/Nav.component';
+import { DoneComponent } from './Done/Done.component';
+import { AddTaskComponent } from './AddTask/AddTask.component';
+import { TaskCardComponent } from './TaskCard/TaskCard.component';
+import { ToDoComponent } from './ToDo/ToDo.component';
+import { JwtModule } from '@auth0/angular-jwt';
+
+export function tokenGetter()
+{
+   return localStorage.getItem('token');
+}
 
 @NgModule({
    declarations: [
@@ -25,14 +36,26 @@ import { ResetPasswordComponent } from './ResetPassword/ResetPassword.component'
       HomeComponent,
       RegisterConfirmationComponent,
       ResetConfirmComponent,
-      ResetPasswordComponent
+      ResetPasswordComponent,
+      NavComponent,
+      DoneComponent,
+      AddTaskComponent,
+      TaskCardComponent,
+      ToDoComponent
    ],
    imports: [
       HttpClientModule,
       BrowserModule,
       FormsModule,
       ReactiveFormsModule,
-      RouterModule.forRoot(appRoutes)
+      RouterModule.forRoot(appRoutes),
+      JwtModule.forRoot({
+         config: {
+            tokenGetter: tokenGetter,
+            whitelistedDomains: ['localhost:5000'],
+            blacklistedRoutes: ['localhost:5000/api/auth']
+         }
+      })
    ],
    providers: [
       AuthService,
