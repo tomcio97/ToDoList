@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ToDoList.API.Helpers;
 using ToDoList.API.Models;
 
 namespace ToDoList.API.Data
@@ -23,10 +24,16 @@ namespace ToDoList.API.Data
             return toDo;
         }
 
-        public async Task<IEnumerable<ToDo>> getToDos(string userName)
+        public async Task<IEnumerable<ToDo>> getToDos(string userName, TaskParams taskParams)
         {
-            var toDos = await dataContext.ToDos.Where(t => t.User.UserName == userName).ToListAsync();
-            return toDos;
+            var toDos = dataContext.ToDos.Where(t => t.User.UserName == userName).AsQueryable();
+            if(taskParams.Status != null)
+            {
+                if(taskParams.Status == "done") toDos = toDos.Where(t => t.IsDone);
+                if(taskParams.Status == "todo") toDos = toDos.Where(t => !t.IsDone);
+            }
+
+            return await toDos.ToListAsync();
         }
     }
 }

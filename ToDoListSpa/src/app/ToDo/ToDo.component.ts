@@ -13,21 +13,17 @@ export class ToDoComponent implements OnInit {
 
   tasks: Task[];
   helper = new JwtHelperService();
-  decodedToken: any = {};
 
   constructor(private tasksService: TasksService, private authService: AuthService) { }
 
   ngOnInit() {
-    this.decodedToken = this.authService.decodedToken();
-    console.log(this.decodedToken.unique_name);
     this.getTasks();
   }
 
 
   getTasks() {
-    this.tasksService.getTasks(this.decodedToken.unique_name).subscribe(tasks => {
+    this.tasksService.getTasks(this.authService.decodedToken().unique_name, 'todo').subscribe(tasks => {
         this.tasks = tasks;
-        console.log(this.tasks);
       }, error => {
         console.log(error);
       });

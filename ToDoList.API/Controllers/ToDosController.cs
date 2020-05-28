@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ToDoList.API.Data;
 using ToDoList.API.Dtos;
+using ToDoList.API.Helpers;
 using ToDoList.API.Models;
 
 namespace ToDoList.API.Controllers
@@ -62,12 +63,12 @@ namespace ToDoList.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTasks(string userName)
+        public async Task<IActionResult> GetTasks(string userName, [FromQuery] TaskParams taskParams)
         {
             if(userName != (User.FindFirst(ClaimTypes.Name).Value))
                     return Unauthorized();
      
-            var tasks = await toDoRepository.getToDos(userName);
+            var tasks = await toDoRepository.getToDos(userName, taskParams);
             if(tasks != null)
             {
                 var tasksToReturn = mapper.Map<IEnumerable<TaskForReturnDto>>(tasks);

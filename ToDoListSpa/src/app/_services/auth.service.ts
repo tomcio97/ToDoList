@@ -12,6 +12,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class AuthService {
 
 baseUrl = environment.apiUrl + 'auth/';
+helper = new JwtHelperService();
 
 constructor(private http: HttpClient) { }
 
@@ -25,7 +26,7 @@ login(model: any) {
 
 isLoggedIn() {
   const token = localStorage.getItem('token');
-  return !!token;
+  return !this.helper.isTokenExpired(token);
 }
 
 logout() {
@@ -64,8 +65,7 @@ resetConfirm(email, model) {
 }
 
 decodedToken() {
-  const helper = new JwtHelperService();
-  return helper.decodeToken(localStorage.getItem('token'));
+  return this.helper.decodeToken(localStorage.getItem('token'));
 }
 
 }

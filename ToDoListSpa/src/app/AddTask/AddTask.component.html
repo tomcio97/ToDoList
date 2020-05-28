@@ -1,3 +1,16 @@
-<p>
-  AddTask works!
-</p>
+<div class="container mt-5">
+  <form #addTaskForm = "ngForm" (ngSubmit) = "addTask()">
+    <div class="form-group">
+      <label for="nameOfTask">Nazwa zadania: </label>
+      <textarea type="text" class="form-control" name="taskname" [(ngModel)]= "model.name" placeholder="Wprowadź nazwę" rows=1></textarea>
+    </div>
+    <div class="form-group">
+      <label for="descriptionOfTask">Opis zadania: </label>
+      <textarea type="text" class="form-control" name="description" [(ngModel)]= "model.description"  placeholder="Wprowadź opis" rows=1></textarea>
+    </div>
+    <div class="form-group">
+      <label for="deadline">Deadline: (opcjonalnie) </label>
+      <input type="date" class="form-control" [(ngModel)]= "model.DeathLine" name="deadline" placeholder="Deadline">
+    </div>
+    <button type="submit" class="btn btn-primary">Zapisz zadanie</button>
+  </form>
