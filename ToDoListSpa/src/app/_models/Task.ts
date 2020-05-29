@@ -3,4 +3,6 @@ export interface Task {
     name: string;
     description: string;
     createDate: Date;
+    deathLine: Date;
+    isDone: boolean;
 }
