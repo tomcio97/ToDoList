@@ -33,7 +33,7 @@ namespace ToDoList.API.Data
                 if(taskParams.Status == "todo") toDos = toDos.Where(t => !t.IsDone);
             }
 
-            return await toDos.ToListAsync();
+            return await toDos.OrderByDescending(t => t.CreateDate).ToListAsync();
         }
     }
 }

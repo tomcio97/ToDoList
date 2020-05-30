@@ -26,4 +26,8 @@ createTask(userName: string, model: any) {
   return this.httpClient.post(this.baseUrl + userName + '/todos', model);
 }
 
+changeStatus(userName: string, taskId: number) {
+  return this.httpClient.put(this.baseUrl + userName + '/todos/' + taskId + '/status', {}, {responseType: 'text'});
+}
+
 }

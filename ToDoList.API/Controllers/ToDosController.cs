@@ -79,5 +79,25 @@ namespace ToDoList.API.Controllers
             return BadRequest();
         }
 
+        [HttpPut]
+        [Route("{taskId}/status")]
+        public async Task<IActionResult> ChangeStatus(string userName, int taskId)
+        {
+            if(userName != (User.FindFirst(ClaimTypes.Name).Value))
+                    return Unauthorized();
+
+            var task = await toDoRepository.getToDo(userName, taskId);
+            if(task != null)
+            {
+                if(task.IsDone) return BadRequest("This task is already done");
+
+                task.IsDone = true;
+
+                if(await toDoRepository.SaveAll()) return Ok("Changed status");
+            }
+
+            return BadRequest();
+        }
+
     }
 }

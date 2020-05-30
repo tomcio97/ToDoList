@@ -28,4 +28,10 @@ export class ToDoComponent implements OnInit {
         console.log(error);
       });
   }
+
+  removeFromTable(event) {
+
+    this.tasks.splice(this.tasks.findIndex(t => t.id === event), 1);
+
+  }
 }

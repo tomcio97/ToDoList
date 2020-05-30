@@ -2,7 +2,7 @@
   <div class="card-header">
     <span class="mr-5">{{task.name}}</span>
     <span class="ml-5" *ngIf= "!task.isDone">
-    <button class="btn btn-primary"><span class="d-none d-xl-block"><i class="fa fa-check mr-1"></i>Zrobione</span><i class="d-xl-none fa fa-check"></i></button>
+    <button class="btn btn-primary" (click)= "changeStatus()"><span class="d-none d-xl-block"><i class="fa fa-check mr-1"></i>Zrobione</span><i class="d-xl-none fa fa-check"></i></button>
     <button class="btn btn-info"><span class="d-none d-xl-block"><i class="fa fa-pencil mr-1"></i>Edytuj</span><i class="d-xl-none fa fa-pencil"></i></button>
     <button class="btn btn-danger"><span class="d-none d-xl-block"><i class="fa fa-trash mr-1"></i>Usuń</span><i class="d-xl-none fa fa-trash"></i></button>
   </span>

@@ -1,5 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { Task } from '../_models/Task';
+import { AuthService } from '../_services/auth.service';
+import { TasksService } from '../_services/Tasks.service';
+import { AlertifyService } from '../_services/alertify.service';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-TaskCard',
@@ -9,13 +13,14 @@ import { Task } from '../_models/Task';
 export class TaskCardComponent implements OnInit {
 
   @Input() task: Task;
+  @Output() eventEmitter = new EventEmitter();
 
-  constructor() { }
+  constructor(private authService: AuthService, private tasksService: TasksService, private alertify: AlertifyService) { }
 
   ngOnInit() {
 
 
-    console.log(this.daysLeft());
+    console.log(this.task.id);
 
   }
 
@@ -35,5 +40,14 @@ export class TaskCardComponent implements OnInit {
     return differenceInDays;
   }
 
+  changeStatus() {
+      this.tasksService.changeStatus(this.authService.decodedToken().unique_name, this.task.id).subscribe(() => {
+        this.alertify.success('Zmieniono status na zrobiony');
+        this.eventEmitter.emit(this.task.id);
+        
+      }, error => {
+          this.alertify.error(error.error);
+      });
+  }
 
 }
