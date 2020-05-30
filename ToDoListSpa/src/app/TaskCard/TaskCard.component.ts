@@ -18,10 +18,6 @@ export class TaskCardComponent implements OnInit {
   constructor(private authService: AuthService, private tasksService: TasksService, private alertify: AlertifyService) { }
 
   ngOnInit() {
-
-
-    console.log(this.task.id);
-
   }
 
   daysLeft() {
@@ -48,6 +44,10 @@ export class TaskCardComponent implements OnInit {
       }, error => {
           this.alertify.error(error.error);
       });
+  }
+
+  editClick() {
+    
   }
 
 }

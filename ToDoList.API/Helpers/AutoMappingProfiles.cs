@@ -11,6 +11,7 @@ namespace ToDoList.API.Helpers
             CreateMap<UserForRegisterDto, ApplicationUser>();
             CreateMap<TaskForCreationDto, ToDo>();
             CreateMap<ToDo, TaskForReturnDto>();
+            CreateMap<TaskForUpdateDto, ToDo>();
         }
     }
 }

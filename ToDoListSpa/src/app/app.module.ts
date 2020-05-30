@@ -22,6 +22,7 @@ import { AddTaskComponent } from './AddTask/AddTask.component';
 import { TaskCardComponent } from './TaskCard/TaskCard.component';
 import { ToDoComponent } from './ToDo/ToDo.component';
 import { JwtModule } from '@auth0/angular-jwt';
+import { EditTaskComponent } from './EditTask/EditTask.component';
 
 export function tokenGetter()
 {
@@ -41,7 +42,8 @@ export function tokenGetter()
       DoneComponent,
       AddTaskComponent,
       TaskCardComponent,
-      ToDoComponent
+      ToDoComponent,
+      EditTaskComponent
    ],
    imports: [
       HttpClientModule,
@@ -55,7 +57,7 @@ export function tokenGetter()
             whitelistedDomains: ['localhost:5000'],
             blacklistedRoutes: ['localhost:5000/api/auth']
          }
-      })
+      }),
    ],
    providers: [
       AuthService,

@@ -9,12 +9,14 @@ import { ResetPasswordComponent } from './ResetPassword/ResetPassword.component'
 import { DoneComponent } from './Done/Done.component';
 import { AddTaskComponent } from './AddTask/AddTask.component';
 import { ToDoComponent } from './ToDo/ToDo.component';
+import { EditTaskComponent } from './EditTask/EditTask.component';
 
 export const appRoutes: Routes = [
     {path: '', component: HomeComponent, canActivate: [AuthGuard], children: [
         {path: '', component: ToDoComponent},
         {path: 'zrobione', component: DoneComponent},
-        {path: 'dodawanie', component: AddTaskComponent}
+        {path: 'dodawanie', component: AddTaskComponent},
+        {path: 'edycja/:id', component: EditTaskComponent},
     ] },
     {path: 'login', component: LoginComponent},
     {path: 'rejestracja', component: RegisterComponent},

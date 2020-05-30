@@ -79,6 +79,42 @@ namespace ToDoList.API.Controllers
             return BadRequest();
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetTask(string userName, int id)
+        {
+            if(userName != null)
+            {
+            var task = await toDoRepository.getToDo(userName, id);
+            if(task != null) 
+            {
+                var taskForReturn = mapper.Map<TaskForReturnDto>(task);
+                return Ok(taskForReturn);
+            }
+
+                return NotFound();
+            }
+            
+            return BadRequest();
+
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTask(string userName, int id, TaskForUpdateDto taskForUpdate)
+        {
+                var task = await toDoRepository.getToDo(userName, id);
+                if(task != null)
+                {
+                    mapper.Map(taskForUpdate, task);
+
+                    if(await toDoRepository.SaveAll()) return Ok("Succesfuly updated");
+
+                    return BadRequest("Dupa");
+                    
+                }    
+
+                return NotFound();
+        }
+
         [HttpPut]
         [Route("{taskId}/status")]
         public async Task<IActionResult> ChangeStatus(string userName, int taskId)

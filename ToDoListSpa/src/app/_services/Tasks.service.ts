@@ -22,12 +22,20 @@ getTasks(userName: string, status?): Observable<Task[]> {
   return this.httpClient.get<Task[]>(this.baseUrl + userName + '/todos', {params});
 }
 
+getTask(userName: string, taskId: number) {
+  return this.httpClient.get(this.baseUrl + userName + '/todos/' + taskId);
+}
+
 createTask(userName: string, model: any) {
   return this.httpClient.post(this.baseUrl + userName + '/todos', model);
 }
 
 changeStatus(userName: string, taskId: number) {
   return this.httpClient.put(this.baseUrl + userName + '/todos/' + taskId + '/status', {}, {responseType: 'text'});
+}
+
+updateTask(userName: string, taskId: number, task: Task) {
+  return this.httpClient.put(this.baseUrl + userName + '/todos/' + taskId, task, {responseType: 'text'});
 }
 
 }
