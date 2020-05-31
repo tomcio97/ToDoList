@@ -38,4 +38,8 @@ updateTask(userName: string, taskId: number, task: Task) {
   return this.httpClient.put(this.baseUrl + userName + '/todos/' + taskId, task, {responseType: 'text'});
 }
 
+deleteTask(userName: string, taskId: number) {
+  return this.httpClient.delete(this.baseUrl + userName + '/todos/' + taskId, {responseType: 'text'});
+}
+
 }

@@ -82,6 +82,9 @@ namespace ToDoList.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTask(string userName, int id)
         {
+            if(userName != (User.FindFirst(ClaimTypes.Name).Value))
+                    return Unauthorized();
+
             if(userName != null)
             {
             var task = await toDoRepository.getToDo(userName, id);
@@ -101,6 +104,9 @@ namespace ToDoList.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTask(string userName, int id, TaskForUpdateDto taskForUpdate)
         {
+            if(userName != (User.FindFirst(ClaimTypes.Name).Value))
+                    return Unauthorized();
+
                 var task = await toDoRepository.getToDo(userName, id);
                 if(task != null)
                 {
@@ -133,6 +139,24 @@ namespace ToDoList.API.Controllers
             }
 
             return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTask(string userName, int id)
+        {
+            if(userName != (User.FindFirst(ClaimTypes.Name).Value))
+                    return Unauthorized();
+                    
+            var task = await toDoRepository.getToDo(userName, id);
+            if(task != null)
+            {
+                toDoRepository.Delete(task);
+                if(await toDoRepository.SaveAll()) return Ok("Deleted");
+
+                return BadRequest();
+            }
+
+            return NotFound();
         }
 
     }

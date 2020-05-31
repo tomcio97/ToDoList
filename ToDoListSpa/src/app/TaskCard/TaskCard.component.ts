@@ -46,8 +46,16 @@ export class TaskCardComponent implements OnInit {
       });
   }
 
-  editClick() {
-    
+  deleteTask() {
+    this.alertify.confirm('Czy napewno chcesz usunąc zadanie?', () => {
+      this.tasksService.deleteTask(this.authService.decodedToken().unique_name, this.task.id).subscribe(() => {
+        this.alertify.success('Usunięto zadanie');
+        this.eventEmitter.emit(this.task.id);
+      }, error => {
+        this.alertify.error('Nie udało się usunąć zadania');
+      });
+    });
+
   }
 
 }

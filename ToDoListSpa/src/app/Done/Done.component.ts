@@ -25,4 +25,8 @@ export class DoneComponent implements OnInit {
       });
   }
 
+  removeFromTable(event) {
+
+    this.tasks.splice(this.tasks.findIndex(t => t.id === event), 1);
+  }
 }

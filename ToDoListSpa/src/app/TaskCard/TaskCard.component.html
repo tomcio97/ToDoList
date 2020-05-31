@@ -4,10 +4,10 @@
     <span class="ml-5" *ngIf= "!task.isDone">
     <button class="btn btn-primary" (click)= "changeStatus()"><span class="d-none d-xl-block"><i class="fa fa-check mr-1"></i>Zrobione</span><i class="d-xl-none fa fa-check"></i></button>
     <button class="btn btn-info" [routerLink]="['/edycja', task.id]" routerLinkActive="router-link-active" ><span class="d-none d-xl-block"><i class="fa fa-pencil mr-1"></i>Edytuj</span><i class="d-xl-none fa fa-pencil"></i></button>
-    <button class="btn btn-danger"><span class="d-none d-xl-block"><i class="fa fa-trash mr-1"></i>Usuń</span><i class="d-xl-none fa fa-trash"></i></button>
+    <button class="btn btn-danger" (click)= "deleteTask()"><span class="d-none d-xl-block"><i class="fa fa-trash mr-1"></i>Usuń</span><i class="d-xl-none fa fa-trash"></i></button>
   </span>
     <span class="ml-3 text-succes" *ngIf= "task.isDone"><i class="fa fa-check mr-1"></i> Wykonano!
-      <button class="btn btn-danger ml-2"><span class="d-none d-xl-block"><i class="fa fa-trash mr-1"></i>Usuń</span><i class="d-xl-none fa fa-trash"></i></button>
+      <button class="btn btn-danger ml-2" (click)= "deleteTask()"><span class="d-none d-xl-block"><i class="fa fa-trash mr-1"></i>Usuń</span><i class="d-xl-none fa fa-trash"></i></button>
     </span>
   </div>
   <div class="card-body">
